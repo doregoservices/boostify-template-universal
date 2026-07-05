@@ -44,6 +44,8 @@ const defaultConfig = {
   portfolioEyebrow: 'Exemples de notre travail',
   testimonialsTitle: 'Ce que disent nos clients',
   testimonialsEyebrow: 'Ils nous ont fait confiance',
+  productsTitle: 'Découvrez nos produits',
+  productsEyebrow: 'Nos produits',
   processStep1Title: 'Contact',
   processStep1Desc: 'Vous nous expliquez votre besoin.',
   processStep2Title: 'Réalisation',
@@ -59,6 +61,7 @@ const allowedFields = [
   'footerText', 'metaDescription', 'metaKeywords', 'heroTitle', 'heroSubtitle',
   'heroEyebrow', 'heroTags', 'servicesTitle', 'servicesEyebrow', 'packsTitle', 'packsEyebrow',
   'portfolioTitle', 'portfolioEyebrow', 'testimonialsTitle', 'testimonialsEyebrow',
+  'productsTitle', 'productsEyebrow',
   'processStep1Title', 'processStep1Desc', 'processStep2Title', 'processStep2Desc',
   'processStep3Title', 'processStep3Desc'
 ];

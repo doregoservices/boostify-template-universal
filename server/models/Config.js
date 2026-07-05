@@ -129,6 +129,14 @@ const configSchema = new mongoose.Schema({
     type: String,
     default: 'Ils nous ont fait confiance'
   },
+  productsTitle: {
+    type: String,
+    default: 'Découvrez nos produits'
+  },
+  productsEyebrow: {
+    type: String,
+    default: 'Nos produits'
+  },
   processStep1Title: {
     type: String,
     default: 'Contact'

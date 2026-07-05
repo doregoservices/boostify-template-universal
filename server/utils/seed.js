@@ -42,6 +42,8 @@ const defaultConfig = {
   portfolioEyebrow: 'Exemples de notre travail',
   testimonialsTitle: 'Ce que disent nos clients',
   testimonialsEyebrow: 'Ils nous ont fait confiance',
+  productsTitle: 'Découvrez nos produits',
+  productsEyebrow: 'Nos produits',
   processStep1Title: 'Contact',
   processStep1Desc: 'Vous nous expliquez votre besoin.',
   processStep2Title: 'Réalisation',
@@ -151,6 +153,31 @@ const defaultTestimonials = [
   }
 ];
 
+const defaultProducts = [
+  {
+    name: 'Produit exemple 1',
+    nameEn: 'Example product 1',
+    description: 'Description de votre premier produit.',
+    descriptionEn: 'Description of your first product.',
+    price: '5 000 FCFA',
+    imagePath: 'images/portfolio-boostify-work.jpg',
+    category: 'Exemple',
+    order: 1,
+    active: true
+  },
+  {
+    name: 'Produit exemple 2',
+    nameEn: 'Example product 2',
+    description: 'Description de votre deuxième produit.',
+    descriptionEn: 'Description of your second product.',
+    price: '10 000 FCFA',
+    imagePath: 'images/portfolio-boostify-work.jpg',
+    category: 'Exemple',
+    order: 2,
+    active: true
+  }
+];
+
 async function imageToBase64(relativePath) {
   try {
     const filePath = path.join(__dirname, '../../public', relativePath);
@@ -237,6 +264,26 @@ async function seedTestimonials() {
   }
 }
 
+async function seedProducts() {
+  try {
+    const Product = require('../models/Product');
+    const count = await Product.countDocuments();
+    if (count === 0) {
+      const items = [];
+      for (const item of defaultProducts) {
+        items.push({
+          ...item,
+          imagePath: await imageToBase64(item.imagePath)
+        });
+      }
+      await Product.insertMany(items);
+      console.log('✅ Produits par défaut créés.');
+    }
+  } catch (err) {
+    console.error('Erreur seed products:', err.message);
+  }
+}
+
 async function seedAll() {
   if (mongoose.connection.readyState !== 1) {
     console.log('⚠️ MongoDB non connecté. Seed ignoré.');
@@ -246,6 +293,7 @@ async function seedAll() {
   await seedConfig();
   await seedServices();
   await seedPacks();
+  await seedProducts();
   await seedPortfolio();
   await seedTestimonials();
   console.log('🌱 Seed terminé.');

@@ -105,6 +105,7 @@
         <button class="nav-tab active" onclick="showPanel('orders')">📦 Commandes</button>
         <button class="nav-tab" onclick="showPanel('services')">🛠️ Services</button>
         <button class="nav-tab" onclick="showPanel('packs')">📦 Packs</button>
+        <button class="nav-tab" onclick="showPanel('products')">🛍️ Produits</button>
         <button class="nav-tab" onclick="showPanel('portfolio')">🖼️ Portfolio</button>
         <button class="nav-tab" onclick="showPanel('testimonials')">💬 Avis clients</button>
         <button class="nav-tab" onclick="showPanel('config')">⚙️ Configuration</button>
@@ -281,6 +282,80 @@
             </thead>
             <tbody id="packsBody">
               <tr><td colspan="5" class="empty">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products Panel -->
+    <div class="panel" id="productsPanel">
+      <h2>Gestion des produits</h2>
+      <div class="alert" id="productsAlert"></div>
+
+      <div class="section-divider" style="margin-top:0; border-top:none;">
+        <h3>➕ Ajouter un produit</h3>
+        <form id="productForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Nom (Français)</label>
+              <input type="text" id="prodName" required placeholder="Ex: T-shirt premium">
+            </div>
+            <div class="form-group">
+              <label>Nom (Anglais)</label>
+              <input type="text" id="prodNameEn" placeholder="Ex: Premium T-shirt">
+            </div>
+            <div class="form-group">
+              <label>Prix</label>
+              <input type="text" id="prodPrice" required placeholder="Ex: 15 000 FCFA">
+            </div>
+            <div class="form-group">
+              <label>Catégorie</label>
+              <input type="text" id="prodCategory" placeholder="Ex: Vêtements">
+            </div>
+            <div class="form-group">
+              <label>Ordre</label>
+              <input type="number" id="prodOrder" value="0" min="0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description (Français)</label>
+            <textarea id="prodDescription" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Description (Anglais)</label>
+            <textarea id="prodDescriptionEn" rows="3"></textarea>
+          </div>
+
+          <div class="upload-zone" onclick="document.getElementById('prodImage').click()">
+            <input type="file" id="prodImage" accept="image/*" onchange="previewProductImage(this)">
+            <p style="font-size:1.1rem; color:#666;">📤 Cliquez ici pour choisir l'image</p>
+            <p style="font-size:0.85rem; color:#999; margin-top:8px;">JPG, PNG, SVG, WebP, GIF - Max 5MB</p>
+          </div>
+          <img id="prodPreview" class="logo-preview" src="" alt="Aperçu" style="display:none;">
+          <input type="hidden" id="prodImagePath">
+
+          <button type="submit" class="btn btn-primary" style="margin-top:20px;">Ajouter le produit</button>
+        </form>
+      </div>
+
+      <div class="section-divider">
+        <h3>🛍️ Produits actuels</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Ordre</th>
+                <th>Statut</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsBody">
+              <tr><td colspan="7" class="empty">Chargement...</td></tr>
             </tbody>
           </table>
         </div>
@@ -509,6 +584,14 @@
             <input type="text" name="testimonialsEyebrow" id="cfgTestimonialsEyebrow">
           </div>
           <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Titre section Produits</label>
+            <input type="text" name="productsTitle" id="cfgProductsTitle">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre section Produits</label>
+            <input type="text" name="productsEyebrow" id="cfgProductsEyebrow">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
             <label>Processus étape 1 - Titre</label>
             <input type="text" name="processStep1Title" id="cfgProcessStep1Title">
           </div>
@@ -628,6 +711,7 @@
       if (panelName === 'orders') loadOrders();
       if (panelName === 'services') loadServicesAdmin();
       if (panelName === 'packs') loadPacksAdmin();
+      if (panelName === 'products') loadProductsAdmin();
       if (panelName === 'portfolio') loadPortfolioAdmin();
       if (panelName === 'testimonials') loadTestimonials();
       if (panelName === 'config') loadConfig();
@@ -831,6 +915,8 @@
         document.getElementById('cfgPortfolioEyebrow').value = config.portfolioEyebrow || '';
         document.getElementById('cfgTestimonialsTitle').value = config.testimonialsTitle || '';
         document.getElementById('cfgTestimonialsEyebrow').value = config.testimonialsEyebrow || '';
+        document.getElementById('cfgProductsTitle').value = config.productsTitle || '';
+        document.getElementById('cfgProductsEyebrow').value = config.productsEyebrow || '';
         document.getElementById('cfgProcessStep1Title').value = config.processStep1Title || '';
         document.getElementById('cfgProcessStep1Desc').value = config.processStep1Desc || '';
         document.getElementById('cfgProcessStep2Title').value = config.processStep2Title || '';
@@ -1293,6 +1379,175 @@
         loadPacksAdmin();
       } catch (err) {
         showAlert('packsAlert', 'Erreur: ' + err.message, 'error');
+      }
+    }
+
+    let editingProductId = null;
+
+    function resetProductForm() {
+      document.getElementById('productForm').reset();
+      editingProductId = null;
+      document.getElementById('prodPreview').style.display = 'none';
+      document.getElementById('prodImagePath').value = '';
+      const btn = document.querySelector('#productForm button[type="submit"]');
+      if (btn) btn.textContent = 'Ajouter le produit';
+    }
+
+    async function loadProductsAdmin() {
+      try {
+        const res = await fetch('/api/products/all', {
+          headers: { 'x-admin-password': adminPassword }
+        });
+        const data = await res.json();
+        renderProductsAdmin(data.products || []);
+      } catch (err) {
+        document.getElementById('productsBody').innerHTML = `<tr><td colspan="7" class="empty">Erreur: ${err.message}</td></tr>`;
+      }
+    }
+
+    function renderProductsAdmin(products) {
+      const tbody = document.getElementById('productsBody');
+      if (products.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty">Aucun produit pour le moment.</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = products.map(p => {
+        const status = p.active
+          ? '<span class="status status-termine">Visible</span>'
+          : '<span class="status status-annule">Masqué</span>';
+        return `
+          <tr>
+            <td><img src="${p.imagePath || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\'/%3E'}" style="width:80px; height:80px; object-fit:cover; border-radius:8px;"></td>
+            <td><strong>${escapeHtml(p.name)}</strong><br><small style="color:#888;">${escapeHtml(p.nameEn || '')}</small></td>
+            <td>${escapeHtml(p.price)}</td>
+            <td>${escapeHtml(p.category || '')}</td>
+            <td>${p.order || 0}</td>
+            <td>${status}</td>
+            <td>
+              <button class="btn btn-success" onclick="editProduct('${p._id}')">Modifier</button>
+              <button class="btn btn-success" onclick="toggleProduct('${p._id}')">${p.active ? 'Masquer' : 'Afficher'}</button>
+              <button class="btn btn-danger" onclick="deleteProduct('${p._id}')">Supprimer</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function previewProductImage(input) {
+      const file = input.files[0];
+      if (!file) return;
+      const preview = document.getElementById('prodPreview');
+      preview.src = URL.createObjectURL(file);
+      preview.style.display = 'block';
+      uploadProductImage(file);
+    }
+
+    async function uploadProductImage(file) {
+      const formData = new FormData();
+      formData.append('image', file);
+      try {
+        const res = await fetch('/api/products/upload', {
+          method: 'POST',
+          headers: { 'x-admin-password': adminPassword },
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById('prodImagePath').value = data.imagePath;
+          showAlert('productsAlert', 'Image uploadée avec succès.', 'success');
+        } else {
+          throw new Error(data.message);
+        }
+      } catch (err) {
+        showAlert('productsAlert', 'Erreur upload: ' + err.message, 'error');
+      }
+    }
+
+    document.getElementById('productForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('prodName').value,
+        nameEn: document.getElementById('prodNameEn').value,
+        description: document.getElementById('prodDescription').value,
+        descriptionEn: document.getElementById('prodDescriptionEn').value,
+        price: document.getElementById('prodPrice').value,
+        imagePath: document.getElementById('prodImagePath').value,
+        category: document.getElementById('prodCategory').value,
+        order: document.getElementById('prodOrder').value
+      };
+      try {
+        const url = editingProductId ? `/api/products/${editingProductId}` : '/api/products';
+        const method = editingProductId ? 'PATCH' : 'POST';
+        const res = await fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showAlert('productsAlert', editingProductId ? 'Produit mis à jour !' : 'Produit ajouté avec succès !', 'success');
+          resetProductForm();
+          loadProductsAdmin();
+        } else {
+          throw new Error(result.message);
+        }
+      } catch (err) {
+        showAlert('productsAlert', 'Erreur: ' + err.message, 'error');
+      }
+    });
+
+    async function editProduct(id) {
+      try {
+        const res = await fetch('/api/products/all', {
+          headers: { 'x-admin-password': adminPassword }
+        });
+        const data = await res.json();
+        const product = (data.products || []).find(p => p._id === id);
+        if (!product) throw new Error('Produit non trouvé');
+        document.getElementById('prodName').value = product.name || '';
+        document.getElementById('prodNameEn').value = product.nameEn || '';
+        document.getElementById('prodDescription').value = product.description || '';
+        document.getElementById('prodDescriptionEn').value = product.descriptionEn || '';
+        document.getElementById('prodPrice').value = product.price || '';
+        document.getElementById('prodCategory').value = product.category || '';
+        document.getElementById('prodOrder').value = product.order || 0;
+        document.getElementById('prodImagePath').value = product.imagePath || '';
+        const preview = document.getElementById('prodPreview');
+        preview.src = product.imagePath || '';
+        preview.style.display = product.imagePath ? 'block' : 'none';
+        editingProductId = id;
+        const btn = document.querySelector('#productForm button[type="submit"]');
+        if (btn) btn.textContent = 'Mettre à jour le produit';
+        document.getElementById('productsPanel').scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        showAlert('productsAlert', 'Erreur: ' + err.message, 'error');
+      }
+    }
+
+    async function toggleProduct(id) {
+      if (editingProductId === id) resetProductForm();
+      try {
+        await fetch(`/api/products/${id}/toggle`, {
+          method: 'PATCH',
+          headers: { 'x-admin-password': adminPassword }
+        });
+        loadProductsAdmin();
+      } catch (err) {
+        showAlert('productsAlert', 'Erreur: ' + err.message, 'error');
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('Supprimer ce produit ?')) return;
+      if (editingProductId === id) resetProductForm();
+      try {
+        await fetch(`/api/products/${id}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-password': adminPassword }
+        });
+        loadProductsAdmin();
+      } catch (err) {
+        showAlert('productsAlert', 'Erreur: ' + err.message, 'error');
       }
     }
 

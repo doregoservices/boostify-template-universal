@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadConfig();
   loadServices();
   loadPacks();
+  loadProducts();
   loadTestimonials();
   loadPortfolio();
 
@@ -377,6 +378,8 @@ async function loadConfig() {
     updateText('portfolioTitle', config.portfolioTitle);
     updateText('testimonialsEyebrow', config.testimonialsEyebrow);
     updateText('testimonialsTitle', config.testimonialsTitle);
+    updateText('productsTitle', config.productsTitle);
+    updateText('productsEyebrow', config.productsEyebrow);
 
     // Update hero eyebrow and tags
     updateText('heroEyebrow', config.heroEyebrow);
@@ -577,6 +580,69 @@ async function loadPacks() {
     }
   } catch (error) {
     console.error('Erreur chargement packs:', error);
+  }
+}
+
+// Load products (replaces static if server returns data)
+async function loadProducts() {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+
+  try {
+    const response = await fetch(`/api/products?_t=${Date.now()}`);
+    const result = await response.json();
+
+    if (!result.success || !result.products || result.products.length === 0) {
+      grid.innerHTML = `<div class="empty" style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #666;">Aucun produit pour le moment.</div>`;
+      return;
+    }
+
+    const products = result.products.map(p => {
+      const name = currentLang === 'en' && p.nameEn ? p.nameEn : p.name;
+      const description = currentLang === 'en' && p.descriptionEn ? p.descriptionEn : p.description;
+      const imageSrc = p.imagePath.startsWith('data:') ? p.imagePath : `${p.imagePath}?_t=${Date.now()}`;
+      return `
+        <div class="product-card reveal">
+          <div class="product-img">
+            <img src="${imageSrc}" alt="${escapeHtml(name)}" loading="lazy">
+          </div>
+          <div class="product-info">
+            <div class="product-category">${escapeHtml(p.category || '')}</div>
+            <h3>${escapeHtml(name)}</h3>
+            <p>${escapeHtml(description || '')}</p>
+            <div class="product-price">${escapeHtml(p.price)}</div>
+            <button class="btn btn-primary select-product" data-product="${escapeHtml(p.name)}" data-fr="Commander ce produit" data-en="Order this product">Commander ce produit</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    grid.innerHTML = products;
+    grid.querySelectorAll('.reveal').forEach(el => window.revealObserver.observe(el));
+
+    // Product selection event delegation
+    grid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.select-product');
+      if (!btn) return;
+      const selectedProduct = btn.dataset.product;
+      const packSelect = document.getElementById('pack');
+      if (packSelect) {
+        const option = Array.from(packSelect.options).find(o => o.value === 'Produit: ' + selectedProduct);
+        if (option) {
+          packSelect.value = option.value;
+        } else {
+          // Add dynamic option if not exists
+          const newOption = document.createElement('option');
+          newOption.value = 'Produit: ' + selectedProduct;
+          newOption.textContent = 'Produit: ' + selectedProduct;
+          packSelect.appendChild(newOption);
+          packSelect.value = newOption.value;
+        }
+      }
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    });
+  } catch (error) {
+    console.error('Erreur chargement produits:', error);
   }
 }
 

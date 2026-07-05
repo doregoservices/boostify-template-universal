@@ -13,6 +13,7 @@ const authRouter = require('./routes/auth');
 const portfolioRouter = require('./routes/portfolio');
 const servicesRouter = require('./routes/services');
 const packsRouter = require('./routes/packs');
+const productsRouter = require('./routes/products');
 const { seedAll } = require('./utils/seed');
 
 const app = express();
@@ -54,6 +55,7 @@ app.use('/api/testimonials', testimonialsRouter);
 app.use('/api/portfolio', portfolioRouter);
 app.use('/api/services', servicesRouter);
 app.use('/api/packs', packsRouter);
+app.use('/api/products', productsRouter);
 
 // Admin dashboard route
 app.get('/admin', (req, res) => {
