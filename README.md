@@ -4,11 +4,11 @@ Modèle de site vitrine universel pour créer rapidement des sites web pour diff
 
 ## 3 variantes disponibles
 
-| Branche | Usage | Exemples de clients |
-|---------|-------|---------------------|
-| `main` | Services uniquement | Coiffeur, plombier, consultant, restaurant, infographiste... |
-| `with-products` | Services + catalogue de produits | Restaurant avec livraison, artisan avec boutique, salon avec produits... |
-| `ecommerce` | Vente en ligne complète | Boutique de vêtements, électronique, marchandises... |
+| Branche | Usage | Exemples de clients | Fonctionnalités |
+|---------|-------|---------------------|-----------------|
+| `main` | Services uniquement | Coiffeur, plombier, consultant, restaurant, infographiste... | Site vitrine + formulaire de contact |
+| `with-products` | Services + catalogue de produits | Restaurant avec livraison, artisan avec boutique, salon avec produits... | + catalogue de produits |
+| `ecommerce` | Vente en ligne complète | Boutique de vêtements, électronique, marchandises... | + panier + commande groupée |
 
 ## Utilisation rapide
 

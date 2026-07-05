@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
   loadTestimonials();
   loadPortfolio();
+  updateCartCount();
 
   // Pack selection (event delegation for dynamic packs)
   const packsGrid = document.getElementById('packsGrid');
@@ -190,6 +191,37 @@ document.addEventListener('DOMContentLoaded', () => {
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
+      }
+    });
+  }
+
+  // Cart modal
+  const cartBtn = document.getElementById('cartBtn');
+  const cartModal = document.getElementById('cartModal');
+  const closeCartModal = document.getElementById('closeCartModal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  if (cartBtn && cartModal) {
+    cartBtn.addEventListener('click', openCart);
+  }
+
+  if (closeCartModal && cartModal) {
+    closeCartModal.addEventListener('click', closeCart);
+    cartModal.addEventListener('click', (e) => {
+      if (e.target === cartModal) closeCart();
+    });
+  }
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+      closeCart();
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      const messageField = document.getElementById('message');
+      if (messageField) {
+        const cart = getCart();
+        const items = cart.map(i => `${i.name} - ${i.price}`).join('\n');
+        const intro = currentLang === 'fr' ? 'Commande depuis le panier :' : 'Order from cart:';
+        messageField.value = `${intro}\n${items}`;
       }
     });
   }
@@ -611,7 +643,7 @@ async function loadProducts() {
             <h3>${escapeHtml(name)}</h3>
             <p>${escapeHtml(description || '')}</p>
             <div class="product-price">${escapeHtml(p.price)}</div>
-            <button class="btn btn-primary select-product" data-product="${escapeHtml(p.name)}" data-fr="Commander ce produit" data-en="Order this product">Commander ce produit</button>
+            <button class="btn btn-primary add-to-cart" data-product="${escapeHtml(p.name)}" data-price="${escapeHtml(p.price)}" data-image="${escapeHtml(p.imagePath)}" data-fr="Ajouter au panier" data-en="Add to cart">Ajouter au panier</button>
           </div>
         </div>
       `;
@@ -620,29 +652,114 @@ async function loadProducts() {
     grid.innerHTML = products;
     grid.querySelectorAll('.reveal').forEach(el => window.revealObserver.observe(el));
 
-    // Product selection event delegation
+    // Add to cart event delegation
     grid.addEventListener('click', (e) => {
-      const btn = e.target.closest('.select-product');
+      const btn = e.target.closest('.add-to-cart');
       if (!btn) return;
-      const selectedProduct = btn.dataset.product;
-      const packSelect = document.getElementById('pack');
-      if (packSelect) {
-        const option = Array.from(packSelect.options).find(o => o.value === 'Produit: ' + selectedProduct);
-        if (option) {
-          packSelect.value = option.value;
-        } else {
-          // Add dynamic option if not exists
-          const newOption = document.createElement('option');
-          newOption.value = 'Produit: ' + selectedProduct;
-          newOption.textContent = 'Produit: ' + selectedProduct;
-          packSelect.appendChild(newOption);
-          packSelect.value = newOption.value;
-        }
-      }
-      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+      addToCart({
+        name: btn.dataset.product,
+        price: btn.dataset.price,
+        image: btn.dataset.image
+      });
+      const originalText = btn.textContent;
+      btn.textContent = currentLang === 'fr' ? 'Ajouté !' : 'Added!';
+      setTimeout(() => {
+        btn.textContent = originalText;
+      }, 1500);
     });
   } catch (error) {
     console.error('Erreur chargement produits:', error);
+  }
+}
+
+// Cart functionality
+function getCart() {
+  return JSON.parse(localStorage.getItem('boostify-cart') || '[]');
+}
+
+function saveCart(cart) {
+  localStorage.setItem('boostify-cart', JSON.stringify(cart));
+  updateCartCount();
+}
+
+function updateCartCount() {
+  const cart = getCart();
+  const countEl = document.getElementById('cartCount');
+  if (countEl) countEl.textContent = cart.length;
+}
+
+function addToCart(item) {
+  const cart = getCart();
+  cart.push(item);
+  saveCart(cart);
+  showCartNotification(currentLang === 'fr' ? 'Produit ajouté au panier' : 'Product added to cart');
+}
+
+function removeFromCart(index) {
+  const cart = getCart();
+  cart.splice(index, 1);
+  saveCart(cart);
+  renderCart();
+}
+
+function showCartNotification(message) {
+  const btn = document.getElementById('cartBtn');
+  if (!btn) return;
+  const original = btn.title;
+  btn.title = message;
+  setTimeout(() => {
+    btn.title = original;
+  }, 2000);
+}
+
+function renderCart() {
+  const cartItems = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+  const cartTotalValue = document.getElementById('cartTotalValue');
+  if (!cartItems) return;
+
+  const cart = getCart();
+  if (cart.length === 0) {
+    cartItems.innerHTML = `<p class="empty-cart" data-fr="Votre panier est vide." data-en="Your cart is empty.">${currentLang === 'fr' ? 'Votre panier est vide.' : 'Your cart is empty.'}</p>`;
+    if (cartTotal) cartTotal.style.display = 'none';
+    return;
+  }
+
+  let total = 0;
+  cartItems.innerHTML = cart.map((item, index) => {
+    const priceValue = parseInt(item.price.replace(/\D/g, '')) || 0;
+    total += priceValue;
+    const imageSrc = item.image && item.image.startsWith('data:') ? item.image : (item.image || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\'/%3E');
+    return `
+      <div class="cart-item">
+        <img src="${imageSrc}" alt="${escapeHtml(item.name)}">
+        <div class="cart-item-info">
+          <div class="cart-item-name">${escapeHtml(item.name)}</div>
+          <div class="cart-item-price">${escapeHtml(item.price)}</div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${index})">×</button>
+      </div>
+    `;
+  }).join('');
+
+  if (cartTotal) cartTotal.style.display = 'flex';
+  if (cartTotalValue) cartTotalValue.textContent = total.toLocaleString('fr-FR') + ' FCFA';
+}
+
+function openCart() {
+  const cartModal = document.getElementById('cartModal');
+  if (cartModal) {
+    renderCart();
+    cartModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeCart() {
+  const cartModal = document.getElementById('cartModal');
+  if (cartModal) {
+    cartModal.classList.remove('active');
+    document.body.style.overflow = '';
   }
 }
 

@@ -87,9 +87,20 @@
         <a href="#about" data-fr="À propos" data-en="About">À propos</a>
         <a href="#contact" class="nav-cta" data-fr="Commander" data-en="Order">Commander</a>
       </nav>
-      <div class="lang-toggle">
-        <button id="btn-fr" class="active">FR</button>
-        <button id="btn-en">EN</button>
+      <div class="header-actions">
+        <button class="cart-btn" id="cartBtn" aria-label="Panier">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 6h15l-1.5 9h-12z"></path>
+            <circle cx="9" cy="20" r="1.5"></circle>
+            <circle cx="18" cy="20" r="1.5"></circle>
+            <path d="M6 6L5 3H2"></path>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <div class="lang-toggle">
+          <button id="btn-fr" class="active">FR</button>
+          <button id="btn-en">EN</button>
+        </div>
       </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Menu">
         <span></span><span></span><span></span>
@@ -281,6 +292,21 @@
         <button type="submit" class="btn btn-primary btn-block" data-fr="Envoyer mon avis" data-en="Send my review">Envoyer mon avis</button>
         <div class="form-message" id="testimonialMessage"></div>
       </form>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal" id="cartModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeCartModal">&times;</button>
+      <h3 data-fr="Votre panier" data-en="Your cart">Votre panier</h3>
+      <div id="cartItems">
+        <p class="empty-cart" data-fr="Votre panier est vide." data-en="Your cart is empty.">Votre panier est vide.</p>
+      </div>
+      <div class="cart-total" id="cartTotal" style="display: none;">
+        <strong data-fr="Total :" data-en="Total:">Total :</strong> <span id="cartTotalValue">0 FCFA</span>
+      </div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn" style="margin-top: 20px;" data-fr="Passer la commande" data-en="Proceed to checkout">Passer la commande</button>
     </div>
   </div>
 
