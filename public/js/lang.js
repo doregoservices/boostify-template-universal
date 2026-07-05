@@ -2,7 +2,7 @@
 const langData = {
   fr: {
     // Page title
-    title: "Boostify — L'Alpha du Branding",
+    title: "Mon Site | Votre activité",
     // Navigation
     nav: {
       services: "Services",
@@ -13,27 +13,27 @@ const langData = {
     },
     // Hero
     hero: {
-      eyebrow: "Infographie & Branding",
-      title1: "L'Alpha",
-      title2: "du Branding",
-      desc: "Boostify donne vie à votre identité visuelle. Logos, affiches, réseaux sociaux, impressions, sites web — tout ce dont votre marque a besoin pour briller.",
+      eyebrow: "Votre activité",
+      title1: "Votre",
+      title2: "titre principal",
+      desc: "Décrivez votre activité ici. Ce texte est modifiable dans l'admin.",
       cta1: "Demander un devis",
       cta2: "Voir nos réalisations",
-      stat1: "projets livrés",
+      stat1: "projets réalisés",
       stat2: "clients satisfaits",
       stat3: "années d'expérience"
     },
     // Sections
     sections: {
-      servicesTitle: "Des solutions créatives pour chaque besoin",
-      servicesEyebrow: "Nos expertises",
-      packsTitle: "Choisissez le pack adapté à votre ambition",
-      packsEyebrow: "Nos packs",
+      servicesTitle: "Nos services",
+      servicesEyebrow: "Ce que nous proposons",
+      packsTitle: "Nos formules",
+      packsEyebrow: "Choisissez ce qui vous convient",
       processTitle: "Comment nous travaillons",
       processEyebrow: "Notre méthode",
-      portfolioTitle: "Quelques créations Boostify",
-      portfolioEyebrow: "Portfolio",
-      aboutTitle: "Donner du pouvoir à chaque marque",
+      portfolioTitle: "Nos réalisations",
+      portfolioEyebrow: "Exemples de notre travail",
+      aboutTitle: "À propos de nous",
       aboutEyebrow: "À propos",
       contactTitle: "Lancez votre projet dès maintenant",
       contactEyebrow: "Commander"
@@ -88,9 +88,9 @@ const langData = {
     },
     // About
     about: {
-      role: "Infographiste & Brand Designer",
-      p1: "Je suis Bello Shouaïb, fondateur de Boostify. Je conçois des identités visuelles impactantes et des supports de communication modernes pour entrepreneurs, entreprises et particuliers. Mon objectif : transformer vos idées en designs mémorables qui boostent votre image.",
-      p2: "Basé à Cocody, Abidjan, je travaille avec des clients en Côte d'Ivoire et au-delà."
+      role: "Votre activité",
+      p1: "Présentez votre activité, votre expérience et ce qui vous différencie. Ce texte est modifiable dans l'admin.",
+      p2: "Votre localisation et zone d'intervention."
     },
     // Testimonials
     testimonials: {
@@ -125,7 +125,7 @@ const langData = {
     },
     // Footer
     footer: {
-      tagline: "L'Alpha du Branding. Votre identité visuelle, notre mission.",
+      tagline: "Votre slogan ou message de footer.",
       services: "Services",
       packs: "Packs",
       contact: "Contact",
@@ -133,7 +133,7 @@ const langData = {
     }
   },
   en: {
-    title: "Boostify — The Alpha of Branding",
+    title: "My Site | Your activity",
     nav: {
       services: "Services",
       packs: "Packs",
@@ -142,26 +142,26 @@ const langData = {
       order: "Order"
     },
     hero: {
-      eyebrow: "Graphic Design & Branding",
-      title1: "The Alpha",
-      title2: "of Branding",
-      desc: "Boostify brings your visual identity to life. Logos, posters, social media, printing, websites — everything your brand needs to shine.",
+      eyebrow: "Your activity",
+      title1: "Your",
+      title2: "main title",
+      desc: "Describe your activity here. This text is editable in the admin.",
       cta1: "Request a quote",
       cta2: "See our work",
-      stat1: "projects delivered",
+      stat1: "projects completed",
       stat2: "happy clients",
       stat3: "years of experience"
     },
     sections: {
-      servicesTitle: "Creative solutions for every need",
-      servicesEyebrow: "Our expertise",
-      packsTitle: "Choose the pack that fits your ambition",
-      packsEyebrow: "Our packs",
+      servicesTitle: "Our services",
+      servicesEyebrow: "What we offer",
+      packsTitle: "Our packages",
+      packsEyebrow: "Choose what suits you",
       processTitle: "How we work",
       processEyebrow: "Our method",
-      portfolioTitle: "Some Boostify creations",
-      portfolioEyebrow: "Portfolio",
-      aboutTitle: "Empowering every brand",
+      portfolioTitle: "Our works",
+      portfolioEyebrow: "Examples of our work",
+      aboutTitle: "About us",
       aboutEyebrow: "About",
       contactTitle: "Start your project now",
       contactEyebrow: "Order"
@@ -211,9 +211,9 @@ const langData = {
       card4: "Logo & visual identity"
     },
     about: {
-      role: "Graphic Designer & Brand Designer",
-      p1: "I am Bello Shouaïb, founder of Boostify. I design impactful visual identities and modern communication materials for entrepreneurs, businesses and individuals. My goal: transform your ideas into memorable designs that boost your image.",
-      p2: "Based in Cocody, Abidjan, I work with clients in Côte d'Ivoire and beyond."
+      role: "Your activity",
+      p1: "Describe your activity, experience and what makes you different. This text is editable in the admin.",
+      p2: "Your location and service area."
     },
     // Testimonials
     testimonials: {
@@ -246,7 +246,7 @@ const langData = {
       error: "❌ An error occurred. Please try again or contact me directly."
     },
     footer: {
-      tagline: "The Alpha of Branding. Your visual identity, our mission.",
+      tagline: "Your slogan or footer message.",
       services: "Services",
       packs: "Packs",
       contact: "Contact",

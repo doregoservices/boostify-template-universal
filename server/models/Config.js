@@ -3,39 +3,39 @@ const mongoose = require('mongoose');
 const configSchema = new mongoose.Schema({
   siteName: {
     type: String,
-    default: 'Boostify'
+    default: 'Mon Site'
   },
   slogan: {
     type: String,
-    default: "L'Alpha du Branding"
+    default: 'Votre slogan ici'
   },
   founderName: {
     type: String,
-    default: 'Bello Shouaïb'
+    default: 'Nom du fondateur'
   },
   role: {
     type: String,
-    default: 'Infographiste & Brand Designer'
+    default: 'Votre activité'
   },
   email: {
     type: String,
-    default: 'boostifygraphics@gmail.com'
+    default: 'contact@example.com'
   },
   phone: {
     type: String,
-    default: '+225 01 61 49 85 23'
+    default: '+225 00 00 00 00'
   },
   whatsapp: {
     type: String,
-    default: '+225 05 96 19 56 39'
+    default: '+225 00 00 00 00'
   },
   location: {
     type: String,
-    default: 'Cocody, Abidjan'
+    default: 'Votre localisation'
   },
   website: {
     type: String,
-    default: 'https://boostify-website.onrender.com'
+    default: ''
   },
   logoPath: {
     type: String,
@@ -59,35 +59,99 @@ const configSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: 'Boostify donne vie à votre identité visuelle. Logos, affiches, réseaux sociaux, impressions, sites web — tout ce dont votre marque a besoin pour briller.'
+    default: 'Décrivez votre activité ici. Ce texte apparaît sur la page d\'accueil.'
   },
   aboutTitle: {
     type: String,
-    default: "Donner du pouvoir à chaque marque"
+    default: "À propos de nous"
   },
   aboutText: {
     type: String,
-    default: "Je suis Bello Shouaïb, fondateur de Boostify. Je conçois des identités visuelles impactantes et des supports de communication modernes pour entrepreneurs, entreprises et particuliers. Mon objectif : transformer vos idées en designs mémorables qui boostent votre image."
+    default: "Présentez votre activité, votre expérience et ce qui vous différencie. Ce texte est modifiable dans l'admin."
   },
   footerText: {
     type: String,
-    default: "Votre identité visuelle, notre mission."
+    default: "Votre slogan ou message de footer."
   },
   metaDescription: {
     type: String,
-    default: 'Boostify, agence de branding et infographie en Côte d\'Ivoire. Création de logos, flyers, réseaux sociaux, sites web et impression.'
+    default: 'Description de votre site pour Google et les réseaux sociaux.'
   },
   metaKeywords: {
     type: String,
-    default: 'infographie, branding, logo, flyer, réseaux sociaux, Côte d\'Ivoire, Abidjan, Boostify, Bello Shouaïb'
+    default: 'site, services, entreprise'
   },
   heroTitle: {
     type: String,
-    default: "L'Alpha du Branding"
+    default: "Votre titre principal"
   },
   heroSubtitle: {
     type: String,
     default: ''
+  },
+  heroEyebrow: {
+    type: String,
+    default: 'Votre activité'
+  },
+  heroTags: {
+    type: String,
+    default: 'Service 1, Service 2, Service 3, Service 4'
+  },
+  servicesTitle: {
+    type: String,
+    default: 'Nos services'
+  },
+  servicesEyebrow: {
+    type: String,
+    default: 'Ce que nous proposons'
+  },
+  packsTitle: {
+    type: String,
+    default: 'Nos formules'
+  },
+  packsEyebrow: {
+    type: String,
+    default: 'Choisissez ce qui vous convient'
+  },
+  portfolioTitle: {
+    type: String,
+    default: 'Nos réalisations'
+  },
+  portfolioEyebrow: {
+    type: String,
+    default: 'Exemples de notre travail'
+  },
+  testimonialsTitle: {
+    type: String,
+    default: 'Ce que disent nos clients'
+  },
+  testimonialsEyebrow: {
+    type: String,
+    default: 'Ils nous ont fait confiance'
+  },
+  processStep1Title: {
+    type: String,
+    default: 'Contact'
+  },
+  processStep1Desc: {
+    type: String,
+    default: 'Vous nous expliquez votre besoin.'
+  },
+  processStep2Title: {
+    type: String,
+    default: 'Réalisation'
+  },
+  processStep2Desc: {
+    type: String,
+    default: 'Nous travaillons sur votre projet.'
+  },
+  processStep3Title: {
+    type: String,
+    default: 'Livraison'
+  },
+  processStep3Desc: {
+    type: String,
+    default: 'Vous recevez le résultat final.'
   },
   updatedAt: {
     type: Date,

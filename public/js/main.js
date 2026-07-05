@@ -266,8 +266,8 @@ async function loadConfig() {
       const whatsappFloat = document.getElementById('whatsappFloat');
       if (whatsappFloat) {
         const message = currentLang === 'fr'
-          ? `Bonjour ${config.siteName || 'Boostify'}, je souhaite avoir plus d'informations sur vos services.`
-          : `Hello ${config.siteName || 'Boostify'}, I would like more information about your services.`;
+          ? `Bonjour ${config.siteName || 'Mon Site'}, je souhaite avoir plus d'informations sur vos services.`
+          : `Hello ${config.siteName || 'My Site'}, I would like more information about your services.`;
         whatsappFloat.href = `https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(message)}`;
       }
     }
@@ -368,8 +368,47 @@ async function loadConfig() {
       document.documentElement.style.setProperty('--black', config.darkColor);
     }
 
+    // Update section headers
+    updateText('servicesEyebrow', config.servicesEyebrow);
+    updateText('servicesTitle', config.servicesTitle);
+    updateText('packsEyebrow', config.packsEyebrow);
+    updateText('packsTitle', config.packsTitle);
+    updateText('portfolioEyebrow', config.portfolioEyebrow);
+    updateText('portfolioTitle', config.portfolioTitle);
+    updateText('testimonialsEyebrow', config.testimonialsEyebrow);
+    updateText('testimonialsTitle', config.testimonialsTitle);
+
+    // Update hero eyebrow and tags
+    updateText('heroEyebrow', config.heroEyebrow);
+    if (config.heroTags) {
+      const tagsContainer = document.getElementById('heroTags');
+      if (tagsContainer) {
+        const tags = config.heroTags.split(',').map(t => t.trim()).filter(Boolean);
+        tagsContainer.innerHTML = tags.map(t => `<span>${escapeHtml(t)}</span>`).join('');
+      }
+    }
+
+    // Update process steps
+    updateText('processStep1Title', config.processStep1Title);
+    updateText('processStep1Desc', config.processStep1Desc);
+    updateText('processStep2Title', config.processStep2Title);
+    updateText('processStep2Desc', config.processStep2Desc);
+    updateText('processStep3Title', config.processStep3Title);
+    updateText('processStep3Desc', config.processStep3Desc);
+
   } catch (error) {
     console.error('Erreur chargement config:', error);
+  }
+}
+
+function updateText(id, value) {
+  if (!value) return;
+  const el = document.getElementById(id);
+  if (el) {
+    el.textContent = value;
+    if (el.hasAttribute('data-fr')) {
+      el.setAttribute('data-fr', value);
+    }
   }
 }
 

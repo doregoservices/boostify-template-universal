@@ -8,115 +8,105 @@ const { processImageFile } = require('./image');
 const fs = require('fs');
 const path = require('path');
 
+// Les valeurs par défaut sont volontairement neutres pour servir de modèle universel.
 const defaultConfig = {
-  siteName: 'Boostify',
-  slogan: "L'Alpha du Branding",
-  founderName: 'Bello Shouaïb',
-  role: 'Infographiste & Brand Designer',
-  email: 'boostifygraphics@gmail.com',
-  phone: '+225 01 61 49 85 23',
-  whatsapp: '+225 05 96 19 56 39',
-  location: 'Cocody, Abidjan',
-  website: 'https://boostify-website.onrender.com',
+  siteName: 'Mon Site',
+  slogan: 'Votre slogan ici',
+  founderName: 'Nom du fondateur',
+  role: 'Votre activité',
+  email: 'contact@example.com',
+  phone: '+225 00 00 00 00',
+  whatsapp: '+225 00 00 00 00',
+  location: 'Votre localisation',
+  website: '',
   logoPath: 'images/logo-boostify.svg',
   darkLogoPath: 'images/logo-boostify-dark.svg',
   faviconPath: 'favicon.svg',
   primaryColor: '#F5A623',
   darkColor: '#111111',
-  description: 'Boostify donne vie à votre identité visuelle. Logos, affiches, réseaux sociaux, impressions, sites web — tout ce dont votre marque a besoin pour briller.',
-  aboutTitle: "Donner du pouvoir à chaque marque",
-  aboutText: "Je suis Bello Shouaïb, fondateur de Boostify. Je conçois des identités visuelles impactantes et des supports de communication modernes pour entrepreneurs, entreprises et particuliers. Mon objectif : transformer vos idées en designs mémorables qui boostent votre image.",
-  footerText: "Votre identité visuelle, notre mission.",
-  metaDescription: 'Boostify, agence de branding et infographie en Côte d\'Ivoire. Création de logos, flyers, réseaux sociaux, sites web et impression.',
-  metaKeywords: 'infographie, branding, logo, flyer, réseaux sociaux, Côte d\'Ivoire, Abidjan, Boostify, Bello Shouaïb',
-  heroTitle: "L'Alpha du Branding",
-  heroSubtitle: ''
+  description: 'Décrivez votre activité ici. Ce texte apparaît sur la page d\'accueil.',
+  aboutTitle: 'À propos de nous',
+  aboutText: "Présentez votre activité, votre expérience et ce qui vous différencie. Ce texte est modifiable dans l'admin.",
+  footerText: 'Votre slogan ou message de footer.',
+  metaDescription: 'Description de votre site pour Google et les réseaux sociaux.',
+  metaKeywords: 'site, services, entreprise',
+  heroTitle: 'Votre titre principal',
+  heroSubtitle: '',
+  heroEyebrow: 'Votre activité',
+  heroTags: 'Service 1, Service 2, Service 3, Service 4',
+  servicesTitle: 'Nos services',
+  servicesEyebrow: 'Ce que nous proposons',
+  packsTitle: 'Nos formules',
+  packsEyebrow: 'Choisissez ce qui vous convient',
+  portfolioTitle: 'Nos réalisations',
+  portfolioEyebrow: 'Exemples de notre travail',
+  testimonialsTitle: 'Ce que disent nos clients',
+  testimonialsEyebrow: 'Ils nous ont fait confiance',
+  processStep1Title: 'Contact',
+  processStep1Desc: 'Vous nous expliquez votre besoin.',
+  processStep2Title: 'Réalisation',
+  processStep2Desc: 'Nous travaillons sur votre projet.',
+  processStep3Title: 'Livraison',
+  processStep3Desc: 'Vous recevez le résultat final.'
 };
 
 const defaultServices = [
   {
-    icon: '🎨',
-    title: 'Création graphique',
-    titleEn: 'Graphic design',
-    description: 'Logos, affiches, flyers, cartes de visite, bannières, menus et visuels réseaux sociaux.',
-    descriptionEn: 'Logos, posters, flyers, business cards, banners, menus and social media visuals.',
+    icon: '🎯',
+    title: 'Service exemple 1',
+    titleEn: 'Example service 1',
+    description: 'Description de votre premier service. Modifiez ou supprimez cet exemple dans l\'admin.',
+    descriptionEn: 'Description of your first service. Edit or delete this example in the admin.',
     order: 1,
     active: true
   },
   {
-    icon: '🖨️',
-    title: 'Impression',
-    titleEn: 'Printing',
-    description: 'Cartes de visite, flyers, bâches, autocollants, T-shirts personnalisés, facturiers et carnets de reçus.',
-    descriptionEn: 'Business cards, flyers, banners, stickers, custom T-shirts, invoices and receipt books.',
+    icon: '🛠️',
+    title: 'Service exemple 2',
+    titleEn: 'Example service 2',
+    description: 'Description de votre deuxième service.',
+    descriptionEn: 'Description of your second service.',
     order: 2,
     active: true
   },
   {
-    icon: '📱',
-    title: 'Réseaux sociaux',
-    titleEn: 'Social media',
-    description: 'Création de pages, contenus mensuels, publicités Facebook/Instagram et optimisation de profils.',
-    descriptionEn: 'Page creation, monthly content, Facebook/Instagram ads and profile optimization.',
+    icon: '⭐',
+    title: 'Service exemple 3',
+    titleEn: 'Example service 3',
+    description: 'Description de votre troisième service.',
+    descriptionEn: 'Description of your third service.',
     order: 3,
-    active: true
-  },
-  {
-    icon: '🏢',
-    title: 'Services entreprises',
-    titleEn: 'Corporate services',
-    description: 'Identité visuelle complète, présentations, brochures, catalogues et signatures e-mail.',
-    descriptionEn: 'Complete visual identity, presentations, brochures, catalogs and email signatures.',
-    order: 4,
-    active: true
-  },
-  {
-    icon: '💻',
-    title: 'Services numériques',
-    titleEn: 'Digital services',
-    description: 'Sites vitrines, CV professionnels, portfolios, QR codes personnalisés et création de contenu.',
-    descriptionEn: 'Showcase websites, professional CVs, portfolios, custom QR codes and content creation.',
-    order: 5,
-    active: true
-  },
-  {
-    icon: '🚀',
-    title: 'Accompagnement publicitaire',
-    titleEn: 'Advertising support',
-    description: 'Stratégie, création de campagnes, suivi et optimisation pour maximiser votre retour sur investissement.',
-    descriptionEn: 'Strategy, campaign creation, tracking and optimization to maximize your return on investment.',
-    order: 6,
     active: true
   }
 ];
 
 const defaultPacks = [
   {
-    name: 'Pack Starter',
-    nameEn: 'Starter Pack',
-    price: '15 000 FCFA',
-    features: ['1 logo professionnel', 'Carte de visite', 'Visuel Facebook'],
-    featuresEn: ['1 professional logo', 'Business card', 'Facebook visual'],
+    name: 'Formule de base',
+    nameEn: 'Basic package',
+    price: 'Prix sur demande',
+    features: ['Prestation essentielle', 'Livraison rapide', 'Support par email'],
+    featuresEn: ['Essential service', 'Fast delivery', 'Email support'],
     popular: false,
     order: 1,
     active: true
   },
   {
-    name: 'Pack Business',
-    nameEn: 'Business Pack',
-    price: '35 000 FCFA',
-    features: ['1 logo professionnel', 'Carte de visite', 'Flyer', 'Couverture Facebook'],
-    featuresEn: ['1 professional logo', 'Business card', 'Flyer', 'Facebook cover'],
+    name: 'Formule populaire',
+    nameEn: 'Popular package',
+    price: 'Prix sur demande',
+    features: ['Prestation complète', 'Livraison prioritaire', 'Support téléphone', 'Bonus inclus'],
+    featuresEn: ['Complete service', 'Priority delivery', 'Phone support', 'Included bonus'],
     popular: true,
     order: 2,
     active: true
   },
   {
-    name: 'Pack Premium',
-    nameEn: 'Premium Pack',
-    price: '75 000 FCFA',
-    features: ['Identité visuelle complète', '10 visuels réseaux sociaux', 'Flyer', 'Carte de visite', 'Accompagnement publicitaire'],
-    featuresEn: ['Complete visual identity', '10 social media visuals', 'Flyer', 'Business card', 'Advertising support'],
+    name: 'Formule premium',
+    nameEn: 'Premium package',
+    price: 'Prix sur demande',
+    features: ['Prestation sur mesure', 'Livraison express', 'Support premium', 'Accompagnement complet'],
+    featuresEn: ['Custom service', 'Express delivery', 'Premium support', 'Full support'],
     popular: false,
     order: 3,
     active: true
@@ -125,61 +115,37 @@ const defaultPacks = [
 
 const defaultPortfolio = [
   {
-    title: 'Carte de visite premium',
-    titleEn: 'Premium business card',
-    imagePath: 'images/portfolio-business-card.jpg',
-    category: 'print',
+    title: 'Réalisation exemple 1',
+    titleEn: 'Example work 1',
+    imagePath: 'images/portfolio-boostify-work.jpg',
+    category: 'autre',
     order: 1,
     active: true
   },
   {
-    title: 'Sacs & packaging',
-    titleEn: 'Bags & packaging',
-    imagePath: 'images/portfolio-shopping-bags.jpg',
-    category: 'branding',
+    title: 'Réalisation exemple 2',
+    titleEn: 'Example work 2',
+    imagePath: 'images/portfolio-boostify-work.jpg',
+    category: 'autre',
     order: 2,
-    active: true
-  },
-  {
-    title: 'T-shirt personnalisé',
-    titleEn: 'Custom T-shirt',
-    imagePath: 'images/portfolio-tshirt.jpg',
-    category: 'print',
-    order: 3,
-    active: true
-  },
-  {
-    title: 'Logo & identité visuelle',
-    titleEn: 'Logo & visual identity',
-    imagePath: 'images/portfolio-logo-design.jpg',
-    category: 'branding',
-    order: 4,
     active: true
   }
 ];
 
 const defaultTestimonials = [
   {
-    name: 'Kouassi Jean',
-    company: 'Boulangerie La Mie Dorée',
+    name: 'Client A',
+    company: 'Entreprise A',
     rating: 5,
-    text: 'Boostify a transformé l\'image de ma boulangerie. Le logo et les flyers sont magnifiques. Merci Bello !',
+    text: 'Excellent service, je recommande vivement.',
     lang: 'fr',
     approved: true
   },
   {
-    name: 'Amina Diallo',
-    company: 'Boutique Élégance',
+    name: 'Client B',
+    company: 'Entreprise B',
     rating: 5,
-    text: 'Très professionnel, réactif et créatif. Je recommande Boostify à tous les entrepreneurs.',
-    lang: 'fr',
-    approved: true
-  },
-  {
-    name: 'Yao Marcel',
-    company: 'Restaurant Chez Kofi',
-    rating: 4,
-    text: 'Les menus et les visuels Instagram ont vraiment boosté ma présence en ligne. Excellent travail.',
+    text: 'Très professionnel et à l\'écoute.',
     lang: 'fr',
     approved: true
   }
@@ -210,29 +176,6 @@ async function seedConfig() {
     if (!config) {
       config = await Config.create(defaultConfig);
       console.log('✅ Configuration par défaut créée.');
-    } else {
-      // Update old invalid defaults without overwriting user changes
-      let updated = false;
-      if (config.location === 'Conzagüe Ville' || config.location === 'Conzagüe') {
-        config.location = defaultConfig.location;
-        updated = true;
-      }
-      if (config.email === 'bellosuaibou@7gmail.com') {
-        config.email = defaultConfig.email;
-        updated = true;
-      }
-      if (config.phone === '+229 66 01 43 36') {
-        config.phone = defaultConfig.phone;
-        updated = true;
-      }
-      if (config.whatsapp === '+225 01 61 49 85 23') {
-        config.whatsapp = defaultConfig.whatsapp;
-        updated = true;
-      }
-      if (updated) {
-        await config.save();
-        console.log('✅ Anciennes informations de contact mises à jour.');
-      }
     }
   } catch (err) {
     console.error('Erreur seed config:', err.message);

@@ -10,31 +10,58 @@ const router = express.Router();
 
 const CONFIG_FILE = 'config';
 
+// Fallback minimal en mode fichier (sans MongoDB)
 const defaultConfig = {
-  siteName: 'Boostify',
-  slogan: "L'Alpha du Branding",
-  founderName: 'Bello Shouaïb',
-  role: 'Infographiste & Brand Designer',
-  email: 'boostifygraphics@gmail.com',
-  phone: '+225 01 61 49 85 23',
-  whatsapp: '+225 05 96 19 56 39',
-  location: 'Cocody, Abidjan',
-  website: 'https://boostify-website.onrender.com',
+  siteName: 'Mon Site',
+  slogan: 'Votre slogan ici',
+  founderName: 'Nom du fondateur',
+  role: 'Votre activité',
+  email: 'contact@example.com',
+  phone: '+225 00 00 00 00',
+  whatsapp: '+225 00 00 00 00',
+  location: 'Votre localisation',
+  website: '',
   logoPath: 'images/logo-boostify.svg',
   darkLogoPath: 'images/logo-boostify-dark.svg',
   faviconPath: 'favicon.svg',
   primaryColor: '#F5A623',
   darkColor: '#111111',
-  description: 'Boostify donne vie à votre identité visuelle. Logos, affiches, réseaux sociaux, impressions, sites web — tout ce dont votre marque a besoin pour briller.',
-  aboutTitle: "Donner du pouvoir à chaque marque",
-  aboutText: "Je suis Bello Shouaïb, fondateur de Boostify. Je conçois des identités visuelles impactantes et des supports de communication modernes pour entrepreneurs, entreprises et particuliers. Mon objectif : transformer vos idées en designs mémorables qui boostent votre image.",
-  footerText: "Votre identité visuelle, notre mission.",
-  metaDescription: 'Boostify, agence de branding et infographie en Côte d\'Ivoire. Création de logos, flyers, réseaux sociaux, sites web et impression.',
-  metaKeywords: 'infographie, branding, logo, flyer, réseaux sociaux, Côte d\'Ivoire, Abidjan, Boostify, Bello Shouaïb',
-  heroTitle: "L'Alpha du Branding",
+  description: 'Décrivez votre activité ici.',
+  aboutTitle: 'À propos de nous',
+  aboutText: "Présentez votre activité. Ce texte est modifiable dans l'admin.",
+  footerText: 'Votre slogan ou message de footer.',
+  metaDescription: 'Description de votre site.',
+  metaKeywords: 'site, services, entreprise',
+  heroTitle: 'Votre titre principal',
   heroSubtitle: '',
-  updatedAt: new Date().toISOString()
+  heroEyebrow: 'Votre activité',
+  heroTags: 'Service 1, Service 2, Service 3, Service 4',
+  servicesTitle: 'Nos services',
+  servicesEyebrow: 'Ce que nous proposons',
+  packsTitle: 'Nos formules',
+  packsEyebrow: 'Choisissez ce qui vous convient',
+  portfolioTitle: 'Nos réalisations',
+  portfolioEyebrow: 'Exemples de notre travail',
+  testimonialsTitle: 'Ce que disent nos clients',
+  testimonialsEyebrow: 'Ils nous ont fait confiance',
+  processStep1Title: 'Contact',
+  processStep1Desc: 'Vous nous expliquez votre besoin.',
+  processStep2Title: 'Réalisation',
+  processStep2Desc: 'Nous travaillons sur votre projet.',
+  processStep3Title: 'Livraison',
+  processStep3Desc: 'Vous recevez le résultat final.'
 };
+
+const allowedFields = [
+  'siteName', 'slogan', 'founderName', 'role', 'email', 'phone',
+  'whatsapp', 'location', 'website', 'logoPath', 'darkLogoPath',
+  'faviconPath', 'primaryColor', 'darkColor', 'description', 'aboutTitle', 'aboutText',
+  'footerText', 'metaDescription', 'metaKeywords', 'heroTitle', 'heroSubtitle',
+  'heroEyebrow', 'heroTags', 'servicesTitle', 'servicesEyebrow', 'packsTitle', 'packsEyebrow',
+  'portfolioTitle', 'portfolioEyebrow', 'testimonialsTitle', 'testimonialsEyebrow',
+  'processStep1Title', 'processStep1Desc', 'processStep2Title', 'processStep2Desc',
+  'processStep3Title', 'processStep3Desc'
+];
 
 async function getConfig() {
   if (isMongoConnected()) {
@@ -46,11 +73,6 @@ async function getConfig() {
 async function saveConfig(updates) {
   if (isMongoConnected()) {
     const config = await Config.getConfig();
-    const allowedFields = [
-      'siteName', 'slogan', 'founderName', 'role', 'email', 'phone',
-      'whatsapp', 'location', 'website', 'logoPath', 'darkLogoPath',
-      'faviconPath', 'primaryColor', 'darkColor', 'description', 'aboutTitle', 'aboutText', 'footerText', 'metaDescription', 'metaKeywords', 'heroTitle', 'heroSubtitle'
-    ];
     allowedFields.forEach(field => {
       if (updates[field] !== undefined) {
         config[field] = updates[field];
@@ -61,11 +83,6 @@ async function saveConfig(updates) {
     return config;
   } else {
     const config = readJsonFile(CONFIG_FILE, defaultConfig);
-    const allowedFields = [
-      'siteName', 'slogan', 'founderName', 'role', 'email', 'phone',
-      'whatsapp', 'location', 'website', 'logoPath', 'darkLogoPath',
-      'faviconPath', 'primaryColor', 'darkColor', 'description', 'aboutTitle', 'aboutText', 'footerText', 'metaDescription', 'metaKeywords', 'heroTitle', 'heroSubtitle'
-    ];
     allowedFields.forEach(field => {
       if (updates[field] !== undefined) {
         config[field] = updates[field];

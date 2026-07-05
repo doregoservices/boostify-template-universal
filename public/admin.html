@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Admin — Boostify</title>
+  <title>Dashboard Admin — Mon Site</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root { --orange: #F5A623; --black: #111; --dark: #1a1a2e; --gray: #f4f4f7; --text: #333; }
@@ -82,7 +82,7 @@
   <!-- Login Overlay -->
   <div class="login-overlay" id="loginOverlay">
     <div class="login-box">
-      <h2>🔒 Admin Boostify</h2>
+      <h2>🔒 Admin Mon Site</h2>
       <p style="color:#666; margin-bottom:20px;">Entrez le mot de passe administrateur pour accéder au dashboard.</p>
       <input type="password" id="adminPassword" placeholder="Mot de passe admin">
       <button class="btn btn-primary btn-block" style="width:100%; justify-content:center;" onclick="login()">Se connecter</button>
@@ -93,7 +93,7 @@
   <header class="header hidden" id="adminHeader">
     <div class="container">
       <div class="header-flex">
-        <h1>Dashboard <span>Boostify</span>
+        <h1>Dashboard <span>Mon Site</span>
           <span class="db-status disconnected" id="dbStatus">Base de données</span>
         </h1>
         <div>
@@ -468,6 +468,70 @@
             <label>Sous-titre principal (héro)</label>
             <input type="text" name="heroSubtitle" id="cfgHeroSubtitle" placeholder="Optionnel">
           </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre au-dessus du titre (héro)</label>
+            <input type="text" name="heroEyebrow" id="cfgHeroEyebrow" placeholder="Ex: Infographie & Branding">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Tags / mots-clés visuels (héro, séparés par des virgules)</label>
+            <input type="text" name="heroTags" id="cfgHeroTags" placeholder="Ex: Logo, Print, Social, Web">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Titre section Services</label>
+            <input type="text" name="servicesTitle" id="cfgServicesTitle">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre section Services</label>
+            <input type="text" name="servicesEyebrow" id="cfgServicesEyebrow">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Titre section Packs / Formules</label>
+            <input type="text" name="packsTitle" id="cfgPacksTitle">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre section Packs / Formules</label>
+            <input type="text" name="packsEyebrow" id="cfgPacksEyebrow">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Titre section Réalisations / Portfolio</label>
+            <input type="text" name="portfolioTitle" id="cfgPortfolioTitle">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre section Réalisations / Portfolio</label>
+            <input type="text" name="portfolioEyebrow" id="cfgPortfolioEyebrow">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Titre section Avis</label>
+            <input type="text" name="testimonialsTitle" id="cfgTestimonialsTitle">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Sous-titre section Avis</label>
+            <input type="text" name="testimonialsEyebrow" id="cfgTestimonialsEyebrow">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 1 - Titre</label>
+            <input type="text" name="processStep1Title" id="cfgProcessStep1Title">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 1 - Description</label>
+            <input type="text" name="processStep1Desc" id="cfgProcessStep1Desc">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 2 - Titre</label>
+            <input type="text" name="processStep2Title" id="cfgProcessStep2Title">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 2 - Description</label>
+            <input type="text" name="processStep2Desc" id="cfgProcessStep2Desc">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 3 - Titre</label>
+            <input type="text" name="processStep3Title" id="cfgProcessStep3Title">
+          </div>
+          <div class="form-group" style="grid-column: 1 / -1;">
+            <label>Processus étape 3 - Description</label>
+            <input type="text" name="processStep3Desc" id="cfgProcessStep3Desc">
+          </div>
         </div>
         <button type="submit" class="btn btn-primary">💾 Enregistrer la configuration</button>
       </form>
@@ -757,6 +821,22 @@
         document.getElementById('cfgMetaKeywords').value = config.metaKeywords || '';
         document.getElementById('cfgHeroTitle').value = config.heroTitle || '';
         document.getElementById('cfgHeroSubtitle').value = config.heroSubtitle || '';
+        document.getElementById('cfgHeroEyebrow').value = config.heroEyebrow || '';
+        document.getElementById('cfgHeroTags').value = config.heroTags || '';
+        document.getElementById('cfgServicesTitle').value = config.servicesTitle || '';
+        document.getElementById('cfgServicesEyebrow').value = config.servicesEyebrow || '';
+        document.getElementById('cfgPacksTitle').value = config.packsTitle || '';
+        document.getElementById('cfgPacksEyebrow').value = config.packsEyebrow || '';
+        document.getElementById('cfgPortfolioTitle').value = config.portfolioTitle || '';
+        document.getElementById('cfgPortfolioEyebrow').value = config.portfolioEyebrow || '';
+        document.getElementById('cfgTestimonialsTitle').value = config.testimonialsTitle || '';
+        document.getElementById('cfgTestimonialsEyebrow').value = config.testimonialsEyebrow || '';
+        document.getElementById('cfgProcessStep1Title').value = config.processStep1Title || '';
+        document.getElementById('cfgProcessStep1Desc').value = config.processStep1Desc || '';
+        document.getElementById('cfgProcessStep2Title').value = config.processStep2Title || '';
+        document.getElementById('cfgProcessStep2Desc').value = config.processStep2Desc || '';
+        document.getElementById('cfgProcessStep3Title').value = config.processStep3Title || '';
+        document.getElementById('cfgProcessStep3Desc').value = config.processStep3Desc || '';
         document.getElementById('cfgLogoPreview').src = config.logoPath || '';
       } catch (err) {
         showAlert('configAlert', 'Erreur de chargement de la config.', 'error');
